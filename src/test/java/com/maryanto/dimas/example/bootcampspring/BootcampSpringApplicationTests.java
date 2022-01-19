@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 import java.util.List;
 
@@ -22,10 +23,12 @@ class BootcampSpringApplicationTests {
     @Test
     void testDataDepartment() {
         try {
-            Department dep = this.depRepo.findById(6);
+            Department dep = this.depRepo.findByIdDuplicate(6);
             System.out.println(dep.getNama());
         } catch (EmptyResultDataAccessException erda) {
             System.out.println("datanya kosong!");
+        } catch (IncorrectResultSizeDataAccessException irsdae) {
+            System.out.println("datanya lebih dari 1");
         }
 
 
