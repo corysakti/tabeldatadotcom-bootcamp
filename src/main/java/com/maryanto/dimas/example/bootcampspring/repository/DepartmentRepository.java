@@ -7,14 +7,17 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class DepartmentRepository {
 
     @Autowired
@@ -49,7 +52,7 @@ public class DepartmentRepository {
                 });
     }
 
-    public Department findByIdDuplicate(Integer id) throws  IncorrectResultSizeDataAccessException, EmptyResultDataAccessException {
+    public Department findByIdDuplicate(Integer id) throws IncorrectResultSizeDataAccessException, EmptyResultDataAccessException {
         MapSqlParameterSource map = new MapSqlParameterSource();
         map.addValue("id", id);
         return this.namedJdbcTemplate.queryForObject("select * from department",
@@ -77,5 +80,21 @@ public class DepartmentRepository {
                                 rs.getString(3));
                     }
                 });
+    }
+
+    @Transactional
+    public Department insert(Department value) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        String query = "insert into department(department_id, name, description)\n" +
+                "values (nextval('department_department_id_seq'), :nama, :desc)";
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("nama", value.getNama());
+        map.addValue("desc", value.getDescription());
+        this.namedJdbcTemplate.update(query, map, keyHolder, new String[]{"department_id"});
+
+        Number key = keyHolder.getKey();
+        value.setId(key.intValue());
+        return value;
     }
 }
