@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -32,7 +33,7 @@ class BootcampSpringApplicationTests {
     @Test
     void testUpdateData() {
         Department depAwal = this.depRepo.findById(1);
-        Department department = new Department(1, "Nilai Baru2", null);
+        Department department = new Department(1, UUID.randomUUID().toString(), null);
         this.depRepo.updateById(department);
 
         Department newDepartment = this.depRepo.findById(department.getId());
