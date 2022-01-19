@@ -20,8 +20,7 @@ public class DepartmentRepository {
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
     public List<Department> list() {
-        MapSqlParameterSource map = new MapSqlParameterSource();
-        this.namedJdbcTemplate.query(
+        return this.namedJdbcTemplate.query(
                 "select * from department",
                 new RowMapper<Department>() {
                     @Override
