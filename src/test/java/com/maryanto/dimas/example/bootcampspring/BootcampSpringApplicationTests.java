@@ -2,6 +2,7 @@ package com.maryanto.dimas.example.bootcampspring;
 
 import com.maryanto.dimas.example.bootcampspring.entity.Department;
 import com.maryanto.dimas.example.bootcampspring.repository.DepartmentRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +27,17 @@ class BootcampSpringApplicationTests {
         Department department = new Department(null, "IT", "IT");
         department = this.depRepo.insert(department);
         System.out.println(department.getId());
+    }
+
+    @Test
+    void testUpdateData() {
+        Department depAwal = this.depRepo.findById(1);
+        Department department = new Department(1, "Nilai Baru2", null);
+        this.depRepo.updateById(department);
+
+        Department newDepartment = this.depRepo.findById(department.getId());
+        Assertions.assertEquals(department.getNama(), newDepartment.getNama());
+        Assertions.assertNotEquals(depAwal.getNama(), newDepartment.getNama());
     }
 
     @Test

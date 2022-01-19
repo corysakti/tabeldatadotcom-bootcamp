@@ -97,4 +97,13 @@ public class DepartmentRepository {
         value.setId(key.intValue());
         return value;
     }
+
+    @Transactional
+    public void updateById(Department value) {
+        String query = "update department set name = :name where department_id = :id";
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("name", value.getNama());
+        map.addValue("id", value.getId());
+        this.namedJdbcTemplate.update(query, map);
+    }
 }
