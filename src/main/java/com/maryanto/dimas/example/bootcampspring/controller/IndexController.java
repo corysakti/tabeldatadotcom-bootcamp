@@ -1,18 +1,27 @@
 package com.maryanto.dimas.example.bootcampspring.controller;
 
 import com.maryanto.dimas.example.bootcampspring.entity.Department;
+import com.maryanto.dimas.example.bootcampspring.repository.DepartmentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
 @RequestMapping("/web")
 public class IndexController {
 
+    @Autowired
+    private DepartmentRepository repo;
+
     @GetMapping("/index")
     public String showIndex(Model model) {
+        List<Department> list = this.repo.list();
         model.addAttribute("data", new Department());
+        model.addAttribute("listDepartment", list);
         return "index";
     }
 
@@ -27,7 +36,7 @@ public class IndexController {
     @PostMapping("/test2")
     public String processRequest2(
             @ModelAttribute Department dept) {
-        System.out.println("nama: " + dept.getNama() + ", description: " + dept.getDescription());
+        this.repo.insert(dept);
         return "redirect:/web/index";
     }
 }
