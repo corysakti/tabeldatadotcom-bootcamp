@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 class BootcampSpringApplicationTests {
@@ -22,6 +23,13 @@ class BootcampSpringApplicationTests {
 
     @Test
     void testDataDepartment() {
+        List<Department> list = this.depRepo.list();
+        list.forEach(data -> {
+            System.out.println(data.getNama());
+        });
+        List<String> listNama = list.stream()
+                .map(Department::getNama).collect(Collectors.toList());
+
         try {
             Department dep = this.depRepo.findByIdDuplicate(6);
             System.out.println(dep.getNama());
@@ -31,11 +39,8 @@ class BootcampSpringApplicationTests {
             System.out.println("datanya lebih dari 1");
         }
 
-
 //        Department dep = this.depRepo.findByIdNoThrowing(6);
 //        System.out.println(dep.getNama());
-
-
     }
 
 }
