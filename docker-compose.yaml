@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:10.10
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=bootcamp
+      - POSTGRES_DB=bootcamp
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+volumes:
+  pg_data:
