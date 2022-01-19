@@ -8,7 +8,22 @@
     <title>Document</title>
 </head>
 <body>
-<p>hai ini dari server java </p>
-<div th:text="${tanggal}"></div>
+
+<form action="" th:method="post" th:action="@{/web/test}" th:object="${data}">
+    <div>
+        <div>
+            <label for="name">Nama</label>
+            <input type="text" name="nama" id="name" th:field="*{nama}"/>
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <textarea name="description" id="description" cols="30" rows="10" th:field="*{description}"></textarea>
+        </div>
+        <div>
+            <button type="submit">Kirim</button>
+            <button type="reset">Rest</button>
+        </div>
+    </div>
+</form>
 </body>
 </html>
