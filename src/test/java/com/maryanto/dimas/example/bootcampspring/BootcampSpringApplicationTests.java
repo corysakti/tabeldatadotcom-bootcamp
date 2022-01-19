@@ -5,6 +5,7 @@ import com.maryanto.dimas.example.bootcampspring.repository.DepartmentRepository
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 
@@ -20,10 +21,18 @@ class BootcampSpringApplicationTests {
 
     @Test
     void testDataDepartment() {
-        List<Department> list = this.depRepo.list();
-        list.forEach(data -> {
-            System.out.println(data.getNama());
-        });
+        try {
+            Department dep = this.depRepo.findById(6);
+            System.out.println(dep.getNama());
+        } catch (EmptyResultDataAccessException erda) {
+            System.out.println("datanya kosong!");
+        }
+
+
+//        Department dep = this.depRepo.findByIdNoThrowing(6);
+//        System.out.println(dep.getNama());
+
+
     }
 
 }
