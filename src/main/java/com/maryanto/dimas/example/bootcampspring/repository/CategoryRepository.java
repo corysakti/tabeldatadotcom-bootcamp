@@ -29,6 +29,8 @@ public class CategoryRepository {
 
     private String sqlSelectAllJoinTable = "SELECT category_id,category.name,category.description,department.department_id,department.name,department.description FROM category INNER JOIN department ON department.department_id = category.department_id";
 
+    private String sqlSelectIdJoinTable = "SELECT category_id,category.name,category.description,department.department_id,department.name,department.description FROM category INNER JOIN department ON department.department_id = category.department_id where category_id = :id";
+
     private String sqlSelectById = "Select * from Category where category_id = :id";
     private String sqlInsert = "insert into category(category_id, department_id, name, description)\n" +
                 "values (nextval('department_department_id_seq'), :department_id, :nama, :desc)";
@@ -79,18 +81,19 @@ public class CategoryRepository {
     public Category findById(Integer id) throws EmptyResultDataAccessException {
         MapSqlParameterSource map = new MapSqlParameterSource();
         map.addValue("id", id);
-        return this.namedParameterJdbcTemplate.queryForObject(sqlSelectById, map,
+        return this.namedParameterJdbcTemplate.queryForObject(sqlSelectIdJoinTable, map,
         new RowMapper<Category>() {
 
             @Override
             public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
                 // TODO Auto-generated method stub
+                Department dep = new Department(rs.getInt(4), rs.getString(5), rs.getString(6));
                 return new Category
                 (
                     rs.getInt(1),
-                    rs.getInt(2),
+                    rs.getString(2),
                     rs.getString(3),
-                    rs.getString(4)
+                    dep
                 );
             }
             
@@ -175,12 +178,12 @@ public class CategoryRepository {
 
     // DELETE FROM table_name WHERE condition;
     @Transactional
-    public Category deleteById(Category value) {
+    public void deleteById(Long id) {
         
         MapSqlParameterSource map = new MapSqlParameterSource();
-        map.addValue("id", value.getId());
+        map.addValue("id", id);
         this.namedParameterJdbcTemplate.update(sqlDeleteById, map);
-        return value;
+        
     }
 
 

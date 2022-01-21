@@ -42,22 +42,22 @@ class BootcampSpringApplicationTests {
         System.out.println(category.getId());
     }
 
-    @Test
-    void testUpdateData() {
-        Category catAwal = this.catRepo.findById(1);
-    //    Category category = new category(1,null, UUID.randomUUID().toString(), null);
-        Category category = new Category(1, null, UUID.randomUUID().toString(), null);
-        this.catRepo.updateById(category);
+    // @Test
+    // void testUpdateData() {
+    //     Category catAwal = this.catRepo.findById(1);
+    // //    Category category = new category(1,null, UUID.randomUUID().toString(), null);
+    //     Category category = new Category(1, null, UUID.randomUUID().toString(), null);
+    //     this.catRepo.updateById(category);
 
-        Category newCategory = this.catRepo.findById(category.getId());
-        Assertions.assertEquals(category.getNama(), newCategory.getNama());
-        Assertions.assertNotEquals(catAwal.getNama(), newCategory.getNama());
-    }
-    @Test
-    void testDeleteData(){
-        Category category = new Category(30, null, null, null);
-        this.catRepo.deleteById(category);
-    }
+    //     Category newCategory = this.catRepo.findById(category.getId());
+    //     Assertions.assertEquals(category.getNama(), newCategory.getNama());
+    //     Assertions.assertNotEquals(catAwal.getNama(), newCategory.getNama());
+    // }
+    // @Test
+    // void testDeleteData(){
+    //     Category category = new Category(30, null, null, null);
+    //     this.catRepo.deleteById(category);
+    // }
 
     @Test
     void testDataCategory() {

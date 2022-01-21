@@ -62,8 +62,8 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public void removeOne(@PathVariable("id") Long id, @RequestBody Category cat){
-        cat = this.catRepo.deleteById(cat);;
+    public void removeOne(@PathVariable("id") Long id){
+        this.catRepo.deleteById(id);;
     }
 
 
