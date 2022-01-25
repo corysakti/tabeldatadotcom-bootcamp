@@ -99,11 +99,13 @@ public class DepartmentRepository {
     }
 
     @Transactional
-    public void updateById(Department value) {
-        String query = "update department set name = :name where department_id = :id";
+    public Department updateById(Department value) {
+        String query = "update department set name = :name, description = :description where department_id = :id";
         MapSqlParameterSource map = new MapSqlParameterSource();
         map.addValue("name", value.getNama());
         map.addValue("id", value.getId());
+        map.addValue("description", value.getDescription());
         this.namedJdbcTemplate.update(query, map);
+        return value;
     }
 }

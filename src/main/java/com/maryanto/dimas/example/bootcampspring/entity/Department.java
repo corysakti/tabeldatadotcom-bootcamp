@@ -1,5 +1,11 @@
 package com.maryanto.dimas.example.bootcampspring.entity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 public class Department {
 
     public Department() {
@@ -12,7 +18,13 @@ public class Department {
     }
 
     public Integer id;
+
+    @NotEmpty
+    @Length(min =  6)
     private String nama;
+
+    @NotEmpty
+    @Length(min = 5)
     private String description;
 
     public void setId(Integer id) {
