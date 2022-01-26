@@ -62,6 +62,7 @@ public class DepartmentApiController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Integer id, @RequestBody Department dept) {
+        
         dept.setId(id);
         this.repo.updateById(dept);
         if (dept.getId() == null) {
@@ -70,5 +71,21 @@ public class DepartmentApiController {
             
             return ResponseEntity.ok(dept);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Department> removeOne(@PathVariable("id") Integer id){
+        Map<String, Object> hasil = new HashMap<>();
+        try {
+            Department dep = repo.findById(id);
+                hasil.put("id", -1);
+                hasil.put("status", "Delete Berhasil");
+            
+            this.repo.deleteById(id);;
+            return ResponseEntity.ok(dep);
+        } catch (EmptyResultDataAccessException ertdae) {
+            return ResponseEntity.noContent().build();
+        }
+        
     }
 }

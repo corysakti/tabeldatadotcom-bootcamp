@@ -20,6 +20,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class DepartmentRepository {
 
+    private String sqlDeleteById = "delete from department where department_id = :id";
+
     @Autowired
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
@@ -107,5 +109,14 @@ public class DepartmentRepository {
         map.addValue("description", value.getDescription());
         this.namedJdbcTemplate.update(query, map);
         return value;
+    }
+
+    @Transactional
+    public void deleteById(Integer id) {
+        
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("id", id);
+        this.namedJdbcTemplate.update(sqlDeleteById, map);
+        
     }
 }
