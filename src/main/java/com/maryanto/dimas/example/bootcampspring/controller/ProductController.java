@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,12 +35,12 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResponseEntity<DataTableResponse<Product>> list(@RequestBody DataTableRequest request) {
         
         DataTableResponse<Product> response = new DataTableResponse<>();
         response.setData(repo.listTable(request));
-        response.setData(repo.listTable(request));
+        response.setDraw(request.getDraw());
         Long total = repo.countProduct(request);
         response.setRecordsFiltered(total);
         response.setRecordsTotal(total);

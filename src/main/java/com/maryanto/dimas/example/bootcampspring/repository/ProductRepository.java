@@ -63,12 +63,15 @@ public class ProductRepository {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("limit", request.getLength());
         paramMap.put("offset", request.getStart());
+        if(name == null){
+            name = "";
+        }
         paramMap.put("name", name);
-        String sql = "select product_id, name, description, price from product" 
-        +"where 1+1 and name like '%'||:name||'%' ORDER BY "+(request.getSortCol()+1)+""
+        String sql = "select product_id, name, description, price from product " 
+        +"where 1=1 and name like '%'||:name||'%' ORDER BY "+(request.getSortCol()+1)+""
         +request.getSortDir()+" limit :limit offset :offset";
 
-        return this.namedJdbcTemplate.query(sql, new RowMapper<Product>() {
+        return this.namedJdbcTemplate.query(sql,paramMap, new RowMapper<Product>() {
 
             @Override
             public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -76,7 +79,7 @@ public class ProductRepository {
                 product.setId(rs.getInt("product_id"));
                 product.setName(rs.getString("name"));
                 product.setDescription(rs.getString("description"));
-                product.setPrice(rs.getInt("columnLabel"));
+                product.setPrice(rs.getInt("price"));
                 return product;
             }
             
@@ -90,7 +93,7 @@ public class ProductRepository {
         String name = (String) extraParam.get("name");
 
         paramMap.put("name", name);
-        String sql = "select count (distinct(product_id)) as total from product";
+        String sql = "select count (distinct(product_id)) as total from product "+"where 1=1 and name ilike '%'||:name||'%' ";
         return namedJdbcTemplate.queryForObject(sql, paramMap,long.class);    
 }
 
