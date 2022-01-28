@@ -2,8 +2,9 @@ package com.maryanto.dimas.example.bootcampspring.entity;
 
 public class Product {
     public Integer id;
-    private String name;
+    private String name, description;
     private Integer price;
+
     
     public Product() {
     }
@@ -12,6 +13,25 @@ public class Product {
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    
+
+    public Product(Integer id, String name, String description, Integer price) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
+    
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getId() {

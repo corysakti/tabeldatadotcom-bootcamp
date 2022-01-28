@@ -2,8 +2,11 @@ package com.maryanto.dimas.example.bootcampspring.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.maryanto.dimas.example.bootcampspring.entity.DataTableRequest;
 import com.maryanto.dimas.example.bootcampspring.entity.Product;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +54,45 @@ public class ProductRepository {
                     }
                 });
     }
+
+    @Transactional
+    public List<Product> listTable(DataTableRequest request) {
+        Map<String, Object> extraParam = request.getExtraParam();
+        String name = (String) extraParam.get("name");
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("limit", request.getLength());
+        paramMap.put("offset", request.getStart());
+        paramMap.put("name", name);
+        String sql = "select product_id, name, description, price from product" 
+        +"where 1+1 and name like '%'||:name||'%' ORDER BY "+(request.getSortCol()+1)+""
+        +request.getSortDir()+" limit :limit offset :offset";
+
+        return this.namedJdbcTemplate.query(sql, new RowMapper<Product>() {
+
+            @Override
+            public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Product product = new Product();
+                product.setId(rs.getInt("product_id"));
+                product.setName(rs.getString("name"));
+                product.setDescription(rs.getString("description"));
+                product.setPrice(rs.getInt("columnLabel"));
+                return product;
+            }
+            
+        });
+    }
+
+    @Transactional
+    public Long countProduct(DataTableRequest request){
+        Map<String, Object> paramMap = new HashMap<>();
+        Map<String, Object> extraParam = request.getExtraParam();
+        String name = (String) extraParam.get("name");
+
+        paramMap.put("name", name);
+        String sql = "select count (distinct(product_id)) as total from product";
+        return namedJdbcTemplate.queryForObject(sql, paramMap,long.class);    
+}
 
     // 
 
